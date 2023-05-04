@@ -13,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fastify": "^4.17.0"
+    "@types/pg": "^8.6.6",
+    "fastify": "^4.17.0",
+    "pg": "^8.10.0"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",

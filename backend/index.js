@@ -14,8 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_1 = __importDefault(require("fastify"));
 const server = (0, fastify_1.default)();
-server.get('/ping', (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
-    return 'pong\n';
+const pg_1 = require("pg");
+const pool = new pg_1.Pool({
+    host: 'postgres',
+    database: 'postgres_db',
+    user: 'postgres',
+    password: 'password',
+    port: 54321,
+});
+server.get('/', (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rows } = yield pool.query('select * from users');
+    return reply.send(rows);
 }));
 server.listen({ port: 8080 }, (err, address) => {
     if (err) {
