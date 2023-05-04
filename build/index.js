@@ -13,15 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_1 = __importDefault(require("fastify"));
-const server = (0, fastify_1.default)({
-    logger: true,
-});
-server.get('/', (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
-    reply.type('application/json').code(200);
-    return { hello: 'world' };
+const server = (0, fastify_1.default)();
+server.get('/ping', (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    return 'pong\n';
 }));
-server.listen(3000, (err, address) => {
-    if (err)
-        throw err;
-    server.log.info(`server listening on ${address}`);
+server.listen({ port: 8080 }, (err, address) => {
+    if (err) {
+        console.error(err);
+        process.exit(1);
+    }
+    console.log(`Server listening at ${address}`);
 });
+//# sourceMappingURL=index.js.map

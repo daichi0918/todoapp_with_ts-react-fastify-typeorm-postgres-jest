@@ -1,19 +1,21 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "license": "MIT",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "dev": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json",
-    "start": "node src/index.ts"
+    "start": "node index.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "fastify": "^4.17.0"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.3",
     "@types/node": "^18.16.3",
     "typescript": "^5.0.4"
   }
