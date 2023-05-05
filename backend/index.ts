@@ -14,6 +14,7 @@ const pool = new Pool({
 
 server.get('/', async (request, reply) => {
   const { rows } = await pool.query('select * from users');
+  console.log(rows);
   return reply.send(rows);
 });
 
