@@ -33,10 +33,23 @@ const connectToDB = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 connectToDB();
+class User {
+    constructor(id, username, password, email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+}
 app.get('/test', (req, res, next) => {
-    const a = pool
-        .query('select * from users')
-        .then((response) => res.send(response.rows));
+    const a = pool.query('select * from users').then((response) => {
+        // rows.forEach(row => {
+        //   const user = new User(row.id, row.username, row.password, row.email);
+        // })
+        res.json({
+            users: response.rows,
+        });
+    });
 });
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at ${process.env.PORT}`);
