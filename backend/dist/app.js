@@ -12,24 +12,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fastify_1 = __importDefault(require("fastify"));
-const server = (0, fastify_1.default)();
+const express_1 = __importDefault(require("express"));
 const pg_1 = require("pg");
+const dotenv_1 = __importDefault(require("dotenv"));
+const app = (0, express_1.default)();
+dotenv_1.default.config(); //Reads .env file and makes it accessible via process.env
 const pool = new pg_1.Pool({
-    host: 'postgres',
-    database: 'postgres_db',
-    user: 'postgres',
-    password: 'password',
-    port: 54321,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: parseInt(process.env.DB_PORT || '5432'),
 });
-server.get('/', (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
-    const { rows } = yield pool.query('select * from users');
-    return reply.send(rows);
-}));
-server.listen({ port: 8080 }, (err, address) => {
-    if (err) {
-        console.error(err);
-        process.exit(1);
+const connectToDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield pool.connect();
     }
-    console.log(`Server listening at ${address}`);
+    catch (err) {
+        console.log(err);
+    }
+});
+connectToDB();
+app.get('/test', (req, res, next) => {
+    const a = pool
+        .query('select * from users')
+        .then((response) => res.send(response.rows));
+});
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running at ${process.env.PORT}`);
 });

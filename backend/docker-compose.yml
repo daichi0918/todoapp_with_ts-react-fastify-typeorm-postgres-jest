@@ -1,17 +1,26 @@
-version: "3.7"
+version: '3.8'
 services:
-  postgres:
-    container_name: postgres
-    image: postgres:13
+  api:
+    container_name: api
+    restart: always
+    build: .
     ports:
-      - 54321:54321
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres_db
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
     volumes:
-      - db_data:/var/lib/posrgresql/data
-      - ./initdb:/docker-entrypoint-initdb.d
+    - .:/usr/src/app
 
-volumes:
-  db_data: {}
+  db:
+    container_name: postgres-sample
+    image: postgres
+    ports:
+      - '5433:${DB_PORT}'
+    volumes:
+      - data:/data/db
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+volumes: 
+ data: {}
