@@ -1,11 +1,16 @@
-import express, { NextFunction, Request, Response } from 'express';
+// import express, { NextFunction, Request, Response } from 'express';
+import fastify from 'fastify';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
 import { plainToInstance } from 'class-transformer';
 
-const app = express();
+// const app = express();
 dotenv.config(); //Reads .env file and makes it accessible via process.env
+
+const server = fastify();
+
+const port = process.env.PORT;
 
 const pool = new Pool({
   host: process.env.DB_HOST,
@@ -38,18 +43,39 @@ class User {
   }
 }
 
-app.get('/test', (req: Request, res: Response, next: NextFunction) => {
+// app.get('/test', (req: Request, res: Response, next: NextFunction) => {
+//   const a = pool.query('select * from users').then((response) => {
+//     // rows.forEach(row => {
+//     //   const user = new User(row.id, row.username, row.password, row.email);
+
+//     // })
+//     res.json({
+//       users: response.rows,
+//     });
+//   });
+// });
+
+server.get('/aaa', async (request, reply) => {
+  console.log('aaa');
   const a = pool.query('select * from users').then((response) => {
     // rows.forEach(row => {
     //   const user = new User(row.id, row.username, row.password, row.email);
 
     // })
-    res.json({
+    reply.send({
       users: response.rows,
     });
   });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running at ${process.env.PORT}`);
+// app.listen(process.env.PORT, () => {
+//   console.log(`Server is running at ${process.env.PORT}`);
+// });
+
+server.listen({ port: 5001 }, (err, address) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log(`Server listening at ${address}`);
 });
