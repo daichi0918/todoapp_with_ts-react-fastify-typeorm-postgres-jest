@@ -42,10 +42,6 @@ class User {
 
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
   pool.query('select * from users').then((response) => {
-    // rows.forEach(row => {
-    //   const user = new User(row.id, row.username, row.password, row.email);
-
-    // })
     res.json({
       users: response.rows,
     });
